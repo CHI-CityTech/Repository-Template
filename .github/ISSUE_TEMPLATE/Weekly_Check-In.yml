@@ -1,0 +1,78 @@
+name: "Weekly Check-in"
+description: "A structured template for reflecting on progress, challenges, and upcoming tasks."
+labels: [check-in, weekly-review]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: "### 🌟 **Weekly Check-in Report**\n#### *Please complete this check-in at the end of the week.*"
+
+  - type: input
+    id: week
+    attributes:
+      label: "Week Number"
+      description: "Enter the week number or date range for this check-in"
+      placeholder: "E.g., Week 4 (Feb 12 - Feb 18)"
+
+  - type: textarea
+    id: progress
+    attributes:
+      label: "✅ Progress This Week"
+      description: "Summarize what you accomplished this week."
+      placeholder: "List completed tasks, milestones reached, or key achievements."
+    validations:
+      required: true
+
+  - type: textarea
+    id: challenges
+    attributes:
+      label: "⚠️ Challenges & Blockers"
+      description: "Describe any difficulties you faced this week."
+      placeholder: "List any issues that slowed you down or prevented progress."
+
+  - type: textarea
+    id: lessons
+    attributes:
+      label: "📚 Lessons Learned"
+      description: "What did you learn this week? This could be technical, conceptual, or workflow-related."
+      placeholder: "Example: 'I learned how to use GitHub Actions for automation.'"
+
+  - type: textarea
+    id: upcoming_tasks
+    attributes:
+      label: "🚀 Next Steps & Goals"
+      description: "Outline what you plan to work on next week."
+      placeholder: "List upcoming tasks and key focus areas."
+
+  - type: dropdown
+    id: ai_usage
+    attributes:
+      label: "🤖 AI Involvement Level"
+      description: "How much did AI assist with your work this week?"
+      options:
+        - "No AI Used"
+        - "Minimal AI Assistance"
+        - "Moderate AI Involvement"
+        - "Extensive AI Use"
+
+  - type: textarea
+    id: ai_reflection
+    attributes:
+      label: "🔍 AI Reflection"
+      description: "If AI was used, describe how it contributed to your work."
+      placeholder: "Example: 'I used ChatGPT to debug my Python script, which saved me two hours.'"
+
+  - type: textarea
+    id: feedback
+    attributes:
+      label: "💡 Feedback & Requests"
+      description: "Anything you need from instructors, peers, or the team?"
+      placeholder: "Example: 'I need help understanding how to structure my database schema.'"
+
+  - type: checkboxes
+    id: final_check
+    attributes:
+      label: "✅ Final Check"
+      options:
+        - label: "I have completed all required fields before submitting this check-in."
+          required: true
