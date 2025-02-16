@@ -1,0 +1,42 @@
+name: Link Weekly Check-in to Master Student Card
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  link_checkin:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extract Issue Creator's GitHub Username
+        id: get_username
+        run: echo "USERNAME=${{ github.event.issue.user.login }}" >> $GITHUB_ENV
+
+      - name: Find Master Student Card Issue in StudentResearch
+        uses: octokit/request-action@v2.x
+        id: find_card
+        with:
+          route: GET /search/issues
+          q: "repo:CHI-CityTech/StudentResearch type:issue author:${{ env.USERNAME }} label:master-card"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Link Weekly Check-in to Master Student Card
+        if: ${{ steps.find_card.outputs.data.total_count > 0 }}
+        uses: octokit/request-action@v2.x
+        with:
+          route: POST /repos/CHI-CityTech/StudentResearch/issues/${{ fromJson(steps.find_card.outputs.data.items)[0].number }}/comments
+          body: |
+            🔗 **Weekly Check-in Linked:** [#${{ github.event.issue.number }}](${{ github.event.issue.html_url }})
+            The student has submitted a new Weekly Check-in. Review progress and update as needed.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Move Master Student Card to "Updated" Column (Optional)
+        if: ${{ steps.find_card.outputs.data.total_count > 0 }}
+        uses: octokit/request-action@v2.x
+        with:
+          route: POST /projects/columns/cards/${{ fromJson(steps.find_card.outputs.data.items)[0].id }}/moves
+          position: "top"
+          column_id: "YOUR_UPDATED_COLUMN_ID" # Replace with actual column ID
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
